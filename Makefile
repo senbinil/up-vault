@@ -1,3 +1,5 @@
+.PHONY: run lint lint-fix test
+
 run:
 	uv run uvicorn up_vault.main:app --reload
 
