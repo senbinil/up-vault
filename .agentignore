@@ -1,0 +1,69 @@
+# .agentignore
+#
+# Paths that AI coding agents should not read, index, or send to a model.
+# Patterns use .gitignore syntax; a leading `!` re-includes a path that was
+# ignored earlier. This file does NOT affect Git — see .gitignore for that.
+# Tooling support varies (.agentignore, .cursorignore, .aiexclude,
+# .copilotignore); the syntax below is compatible with all of them.
+
+# --- Secrets and local configuration -----------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials/
+
+# --- Python -------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# --- Caches and tool output ---------------------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# --- Databases and dumps ------------------------------------------------
+# Keep .sql readable: migrations and seed scripts are often plain SQL source.
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.gz
+
+# --- Binary and media assets (no useful text context) -------------------
+*.pdf
+*.docx
+*.xlsx
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.zip
+*.tar
+*.gz
+*.whl
+
+# --- Editor / OS --------------------------------------------------------
+.vscode/
+.idea/
+.DS_Store
+
+# --- Large generated files ----------------------------------------------
+# The lockfile is intentionally left readable so agents can resolve exact
+# dependency versions. Uncomment to skip it if context size matters more.
+# uv.lock
