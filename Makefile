@@ -1,4 +1,4 @@
-.PHONY: run lint lint-fix test
+.PHONY: run lint lint-fix test create-db
 
 run:
 	uv run uvicorn up_vault.main:app --reload
@@ -11,3 +11,6 @@ lint-fix:
 
 test:
 	uv run pytest
+
+create-db:
+	uv run python scripts/create_db.py
