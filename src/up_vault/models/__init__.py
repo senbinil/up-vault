@@ -7,5 +7,7 @@ empty migration.
 """
 
 from up_vault.models.base import Base
+from up_vault.models.chunk import Chunk
+from up_vault.models.document import Document
 
-__all__ = ["Base"]
+__all__ = ["Base", "Document", "Chunk"]
