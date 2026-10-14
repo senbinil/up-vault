@@ -58,18 +58,20 @@ Always use `uv`. Do not invoke `pip` or bare `python` directly.
 ## Project Structure
 
 RFC 0002 specifies the target layout. The installed package lives under
-`src/up_vault/` (see `pyproject.toml`); the RFC shows an `app/` tree that maps
-onto this package.
+`src/up_vault/` (see `pyproject.toml`), and the RFC's structure section mirrors
+the tree below.
 
 ```text
 src/up_vault/
 ├── api/            # FastAPI routes, request/response schemas
-├── ingestion/      # validation, extraction, chunking, embedding, persistence
-├── retrieval/      # query embedding, vector search, context construction
-├── llm/            # prompt construction, provider client, answer generation
+├── cli/            # Typer commands for local testing (temporary, no HTTP)
+├── services/       # application services: ingestion, retrieval, generation
+│   ├── embeddings/ # embedding provider interface and implementations
+│   └── loaders/    # text extraction by source format
 ├── models/         # domain and persistence models
 ├── config.py       # settings
-└── main.py         # application entry point
+├── database.py     # engine and session factory
+└── main.py         # FastAPI application entry point
 tests/
 docs/rfcs/
 ```
