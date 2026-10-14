@@ -1,4 +1,4 @@
-.PHONY: run lint lint-fix test create-db migration migrate rollback status
+.PHONY: run lint lint-fix test create-db migration migrate rollback status check-migration
 
 run:
 	uv run uvicorn up_vault.main:app --reload
@@ -29,3 +29,9 @@ rollback:
 
 status:
 	uv run alembic current
+
+# Apply pending migrations, then fail if the models have diverged from the
+# migration history, i.e. a model changed without a new revision.
+check-migration:
+	uv run alembic upgrade head
+	uv run alembic check
