@@ -9,6 +9,8 @@ Create Date: ${create_date}
 from collections.abc import Sequence
 
 import sqlalchemy as sa  # noqa: F401
+import pgvector.sqlalchemy
+
 
 from alembic import op  # noqa: F401
 ${imports + "\n" if imports else ""}

@@ -1,0 +1,20 @@
+from pgvector.sqlalchemy import Vector
+from sqlalchemy import ForeignKey
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import Mapped, mapped_column
+
+from up_vault.models.base import Base
+
+
+class Chunk(Base):
+    __tablename__ = "chunks"
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    document_id: Mapped[int] = mapped_column(ForeignKey("documents.id"))
+    content: Mapped[str]
+    chunk_index: Mapped[int]
+    token_count: Mapped[int | None]
+
+    metadata_: Mapped[dict] = mapped_column(JSONB, default=dict)
+
+    embedding: Mapped[list[float]] = mapped_column(Vector(1536))
