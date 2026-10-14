@@ -10,7 +10,7 @@ from up_vault.models.base import Base
 class Document(Base):
     __tablename__ = "documents"
 
-    id: Mapped[str] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
     filename: Mapped[str]
     source_type: Mapped[str]
     content_hash: Mapped[str]

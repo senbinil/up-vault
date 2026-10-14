@@ -111,14 +111,20 @@ pgvector provides vector similarity search.
 
 ```text
 up-vault/
-├── app/
-│   ├── api/
-│   ├── ingestion/
-│   ├── retrieval/
-│   ├── llm/
-│   ├── models/
-│   ├── config.py
-│   └── main.py
+├── src/
+│   └── up_vault/               # installed package
+│       ├── api/                # FastAPI routes, request/response schemas
+│       ├── cli/                # Typer entry points that drive services directly
+│       ├── services/           # application services
+│       │   ├── embeddings/     # embedding provider interface and implementations
+│       │   └── loaders/        # text extraction by source format
+│       ├── models/             # domain and persistence models
+│       ├── config.py           # settings
+│       ├── database.py         # engine and session factory
+│       └── main.py             # FastAPI application entry point
+├── alembic/                    # migrations
+│   └── versions/
+├── scripts/                    # one-off developer scripts
 ├── tests/
 ├── docs/
 │   └── rfcs/
@@ -190,3 +196,25 @@ No Kubernetes, message broker, or separate vector database is required.
 ## 8. Decision
 
 The MVP will use PostgreSQL + pgvector rather than introducing a dedicated vector database.
+
+## 9. Decision: Package Layout
+
+The implementation package lives under `src/up_vault/` rather than a top-level
+`app/` directory, so that it is importable as an installed package and resolves
+consistently under `uv run`, pytest, and Alembic.
+
+Ingestion, retrieval, and generation logic lives under `services/` rather than
+the previously sketched top-level `ingestion/`, `retrieval/`, and `llm/`
+packages. Two reasons:
+
+- The layers share a uniform shape — validate, transform, call a provider,
+  persist — so one `services/` package with format-specific and provider-specific
+  subpackages (`loaders/`, `embeddings/`) is simpler than three parallel trees.
+- It keeps the "keep providers replaceable" principle (section 5) local to where
+  the adapters are consumed.
+
+`cli/` holds commands that drive services directly without HTTP. It is
+temporary scaffolding, used to exercise the ingestion and retrieval services
+from tests while the API layer is still being built. It is not a supported
+interface and is expected to be removed once `api/` covers the same ground.
+`api/` holds the FastAPI layer and stays thin.
