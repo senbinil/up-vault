@@ -5,6 +5,10 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from up_vault.models.base import Base
 
+# Must match the configured embedding model. See
+# EMBEDDING_MODEL=BAAI/bge-small-en-v1.5 (384 dimensions).
+EMBEDDING_DIMENSION = 384
+
 
 class Chunk(Base):
     __tablename__ = "chunks"
@@ -17,4 +21,4 @@ class Chunk(Base):
 
     metadata_: Mapped[dict] = mapped_column(JSONB, default=dict)
 
-    embedding: Mapped[list[float]] = mapped_column(Vector(1536))
+    embedding: Mapped[list[float]] = mapped_column(Vector(EMBEDDING_DIMENSION))
