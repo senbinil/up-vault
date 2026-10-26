@@ -14,7 +14,9 @@ class Chunk(Base):
     __tablename__ = "chunks"
     id: Mapped[int] = mapped_column(primary_key=True)
 
-    document_id: Mapped[int] = mapped_column(ForeignKey("documents.id"))
+    document_id: Mapped[int] = mapped_column(
+        ForeignKey("documents.id", ondelete="CASCADE")
+    )
     content: Mapped[str]
     chunk_index: Mapped[int]
     token_count: Mapped[int | None]
