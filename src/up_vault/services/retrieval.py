@@ -1,5 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from up_vault.models.chunk import Chunk
 from up_vault.services.embeddings.base import EmbeddingProvider
@@ -17,6 +18,7 @@ class RetrievalService:
 
         statement = (
             select(Chunk)
+            .options(joinedload(Chunk.document))
             .order_by(Chunk.embedding.cosine_distance(query_embedding))
             .limit(limit)
         )
